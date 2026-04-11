@@ -9,5 +9,15 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"routes": [
+		{
+			"pattern": "ktext.dev",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.ktext.dev",
+			"custom_domain": true
+		}
+	]
 }
