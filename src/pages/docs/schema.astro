@@ -6,7 +6,7 @@ import CodeBlock from '../../components/CodeBlock.astro';
 <DocsLayout title="Schema Reference" description="Complete reference for all CONTEXT.yaml fields and their types.">
 
   <p>
-    The canonical schema is <a href="https://github.com/arithmetike/ktext/blob/main/internal/schema/context-yaml.schema.json" target="_blank" rel="noopener noreferrer">context-yaml.schema.json</a> — a JSON Schema draft 2020-12 document embedded in the binary and validated at parse time. This page documents all fields.
+    The canonical schema is <a href="https://github.com/arithmetike/ktext/blob/main/internal/schema/context-yaml.schema.json" target="_blank" rel="noopener noreferrer">context-yaml.schema.json</a>, a JSON Schema draft 2020-12 document embedded in the binary and validated at parse time. This page documents all fields.
   </p>
 
   <h2>Top-level structure</h2>
@@ -40,7 +40,7 @@ x: {}                # optional — extension fields`}
       <tr><td>url</td><td>string</td><td>yes</td><td>Canonical repository URL</td></tr>
       <tr><td>type</td><td>string</td><td>no</td><td>service, library, tool, cli, app, infra, monorepo, other</td></tr>
       <tr><td>status</td><td>string</td><td>no</td><td>active, deprecated, experimental, archived</td></tr>
-      <tr><td>purpose</td><td>string</td><td>no</td><td>What this does and why it exists — scored for specificity</td></tr>
+      <tr><td>purpose</td><td>string</td><td>no</td><td>What this does and why it exists (scored for specificity)</td></tr>
     </tbody>
   </table>
 
@@ -57,14 +57,14 @@ x: {}                # optional — extension fields`}
 
   <h2>constraints</h2>
 
-  <p>Hard rules that must never be violated. These are the highest-value entries — constraints that use specific, actionable language score significantly higher than vague ones.</p>
+  <p>Hard rules that must never be violated. Constraints with specific, actionable language score significantly higher than vague ones.</p>
 
   <table>
     <thead>
       <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr><td>content</td><td>string</td><td>yes</td><td>The constraint — use must, never, always, prohibit, etc.</td></tr>
+      <tr><td>content</td><td>string</td><td>yes</td><td>The constraint. Use must, never, always, prohibit, etc.</td></tr>
       <tr><td>why</td><td>string</td><td>no</td><td>Reason — compliance, architecture, safety, etc.</td></tr>
       <tr><td>scope</td><td>string</td><td>no</td><td>Where this applies (e.g. a package, layer, or environment)</td></tr>
     </tbody>

@@ -27,7 +27,7 @@ decisions:
     date: "2024-03"
 
 conventions:
-  - rule: Run all DB queries through the repository layer — no raw SQL in handlers
+  - rule: Run all DB queries through the repository layer, no raw SQL in handlers
     why: Keeps the domain layer testable and persistence swappable
 
 risks:
@@ -38,7 +38,7 @@ risks:
 dependencies:
   - name: PostgreSQL
     url: https://www.postgresql.org
-    why: Primary data store — transactions and JSONB
+    why: Primary data store, transactions and JSONB
   - name: Redis
     url: https://redis.io
     why: Session cache and rate-limit counters
@@ -55,7 +55,7 @@ working:
     - path: internal/payments/
       description: payment processing logic and provider integrations
     - path: internal/repository/
-      description: all database access — no SQL outside this package
+      description: all database access, no SQL outside this package
   notes:
     - Run migrations before starting the server locally
     - Set STRIPE_WEBHOOK_SECRET in .env.local for webhook testing
@@ -69,19 +69,19 @@ const steps = [
     cmd: 'ktext init',
     label: '01 / init',
     title: 'Scan and generate',
-    desc: 'Reads your README, Makefile, package manifests, ADRs, and directory layout. Walks you through each discovered field interactively so you can confirm or correct.',
+    desc: 'Reads your README, Makefile, package manifests, ADRs, and directory layout. Walks you through each discovered field so you can confirm or correct.',
   },
   {
     cmd: 'ktext validate',
     label: '02 / validate',
     title: 'Score quality',
-    desc: 'Scores all eight sections out of 100. Reports exactly what is missing and what to fix. Exits 1 below threshold — use it in CI to prevent context rot.',
+    desc: 'Scores all eight sections out of 100. Reports what is missing and what to fix. Exits 1 below threshold so you can gate on it in CI.',
   },
   {
     cmd: 'ktext export xml',
     label: '03 / export',
     title: 'Export anywhere',
-    desc: 'Renders CONTEXT.yaml as XML or JSON for scripts, pipelines, or injecting directly into LLM context windows at a fraction of the cost of ad-hoc discovery.',
+    desc: 'Renders CONTEXT.yaml as compact XML for direct injection into LLM context windows, or as JSON for scripts and pipelines.',
   },
 ];
 ---
@@ -113,7 +113,7 @@ const steps = [
       <div class="max-w-2xl">
         <div class="inline-flex items-center gap-2 border border-[var(--color-border)] rounded-full px-3 py-1 mb-8">
           <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-green)]"></span>
-          <span class="font-mono text-xs text-[var(--color-muted)]">v0.1.1 — MIT — Go binary, zero setup</span>
+          <span class="font-mono text-xs text-[var(--color-muted)]">v0.1.1 · MIT · Go binary, zero setup</span>
         </div>
 
         <h1 class="text-5xl sm:text-6xl font-semibold leading-tight tracking-tight text-[var(--color-text)] mb-6">
@@ -122,12 +122,13 @@ const steps = [
         </h1>
 
         <p class="text-lg text-[var(--color-muted)] leading-relaxed mb-10 max-w-xl">
-          Every codebase carries invisible context — why Postgres instead of MySQL,
-          what you must never log, which directory owns what. <code class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> makes it explicit.
+          Every codebase has context that lives in engineers' heads: why Postgres instead of MySQL,
+          what you must never log, which layer owns what.
+          <code class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> makes it explicit.
           <code class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext</code> generates, validates, and scores it.
         </p>
 
-        <!-- Install command — $ and code on same baseline, single copy button -->
+        <!-- Install command -->
         <div class="flex items-stretch bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg overflow-hidden max-w-2xl">
           <div class="flex items-center gap-3 flex-1 min-w-0 px-4 py-3 overflow-x-auto">
             <span class="font-mono text-sm text-[var(--color-muted)] select-none shrink-0">$</span>
@@ -162,10 +163,10 @@ const steps = [
           Context lives in engineers' heads.<br />Agents and new hires don't have that.
         </h2>
         <p class="text-[var(--color-muted)] leading-relaxed mb-4">
-          When a new engineer joins, or an AI agent opens a PR, they're working without the institutional knowledge your team takes for granted. They make reasonable guesses. Those guesses are often wrong.
+          When a new engineer joins, or an AI agent opens a PR, they work without the institutional knowledge your team takes for granted. They make reasonable guesses. Those guesses are often wrong.
         </p>
         <p class="text-[var(--color-muted)] leading-relaxed">
-          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> is a structured, human-authored file that captures what matters — constraints, decisions, risks, conventions — in a format that both humans and tools can read.
+          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> captures what matters in a structured file both humans and tools can read: constraints, decisions, risks, and conventions.
         </p>
       </div>
       <div class="space-y-3">
@@ -217,18 +218,18 @@ const steps = [
           One file.<br />Everything an agent needs.
         </h2>
         <p class="text-[var(--color-muted)] leading-relaxed mb-4">
-          Instead of an agent spending tokens reading five config files, grepping for conventions, and guessing at architecture — it reads one file and knows. <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> is designed to be the first thing an agent loads.
+          An agent reading your codebase cold will spend tokens on config files, grep for conventions, and still miss things. Give it <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> and it starts with the full picture.
         </p>
         <p class="text-[var(--color-muted)] leading-relaxed mb-8">
-          No database. No server. No account. It lives at the root of your repo, versioned alongside your code, and is readable by any tool that can parse YAML or JSON.
+          No database, no server, no account. It lives at the root of your repo, versioned with your code, readable by anything that can parse YAML.
         </p>
 
-        <!-- Token savings callout -->
+        <!-- Stats -->
         <div class="grid grid-cols-3 gap-4 mb-8">
           {[
-            { stat: '~50', unit: 'lines', label: 'replaces hours of codebase spelunking' },
-            { stat: '<2k', unit: 'tokens', label: 'for the full file in XML export' },
-            { stat: '0', unit: 'deps', label: 'to parse — plain YAML or JSON' },
+            { stat: '~50', unit: 'lines', label: 'replaces hours of codebase exploration' },
+            { stat: '<2k', unit: 'tokens', label: 'for the full file as XML' },
+            { stat: '0', unit: 'deps', label: 'plain YAML, no tooling required' },
           ].map(item => (
             <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4 text-center">
               <div class="font-mono text-xl font-semibold text-[var(--color-accent)]">{item.stat}</div>
@@ -243,7 +244,7 @@ const steps = [
         </a>
       </div>
 
-      <!-- Right: the YAML, full height, no scroll -->
+      <!-- Right: the YAML -->
       <div>
         <div class="rounded-lg overflow-hidden border border-[var(--color-border)]">
           <div class="flex items-center px-4 py-2 bg-[var(--color-surface-2)] border-b border-[var(--color-border)]">
@@ -264,10 +265,10 @@ const steps = [
           Not just presence.<br />Quality matters.
         </h2>
         <p class="text-[var(--color-muted)] leading-relaxed mb-4">
-          A constraint that says "be careful with auth" is noise. One that says "never store raw credentials in application logs — use structured redaction middleware" is signal.
+          "Be careful with auth" is noise. "Never store raw credentials in application logs, use structured redaction middleware" is signal. The scorer knows the difference and tells you what to fix.
         </p>
         <p class="text-[var(--color-muted)] leading-relaxed mb-8">
-          Each section is scored for presence, completeness, and quality of language. The scorer tells you exactly what to improve and why it matters.
+          Each section is scored for presence, completeness, and language quality across eight weighted categories.
         </p>
         <a href="/docs/scoring" class="inline-flex items-center gap-1.5 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-light)] transition-colors">
           How scoring works →
@@ -284,9 +285,9 @@ const steps = [
     <div class="max-w-7xl mx-auto px-8 py-20">
       <div class="max-w-2xl">
         <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">CI integration</p>
-        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4">Enforce a quality floor in every PR.</h2>
+        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4">Keep quality from slipping.</h2>
         <p class="text-[var(--color-muted)] leading-relaxed mb-6">
-          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext validate</code> exits 1 when the score falls below your threshold. Drop it into any CI pipeline to prevent context rot.
+          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext validate</code> exits 1 below your threshold. One step in CI and context rot becomes a failing check.
         </p>
       </div>
       <div class="rounded-lg overflow-hidden border border-[var(--color-border)] max-w-2xl">
