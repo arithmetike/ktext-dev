@@ -1,0 +1,26 @@
+# ktext
+
+> CLI tool and open standard for capturing project context in a structured, machine-readable format. Helps AI coding agents understand codebases without expensive exploration.
+
+Every codebase has context that lives in engineers' heads: why Postgres instead of MySQL, what you must never log, which layer owns what. `CONTEXT.yaml` makes it explicit. `ktext` generates it, validates it, and scores it.
+
+## Docs
+
+- [Getting Started](https://ktext.dev/docs): Install ktext, run ktext init, validate and score your file, export to XML or JSON, and integrate into CI
+- [Schema Reference](https://ktext.dev/docs/schema): Complete field reference for all CONTEXT.yaml sections — identity, constraints, decisions, conventions, risks, dependencies, working, ownership, and extension fields
+- [Scoring](https://ktext.dev/docs/scoring): How ktext validate scores files out of 100 across eight weighted sections, quality checks per section, and JSON output for CI integration
+- [Common Questions](https://ktext.dev/docs/faq): Why not just use a README, CLAUDE.md, or let the agent explore the codebase
+
+## Key concepts
+
+- `CONTEXT.yaml` is a single file at the root of a repository that captures structured project context: constraints, architectural decisions, conventions, risks, dependencies, and ownership
+- `ktext init` scans the repo (README, package manifests, ADRs, directory structure) and generates an initial file interactively
+- `ktext validate` scores the file out of 100 and outputs specific fixes — exits 1 below the threshold for CI gating
+- `ktext export xml` renders a compact XML format optimized for LLM context injection — roughly 80% fewer tokens than manual codebase exploration
+- The schema is JSON Schema draft 2020-12, embedded in the binary and validated at parse time
+- MIT licensed, no accounts, no telemetry, no network calls
+
+## Links
+
+- [GitHub](https://github.com/arithmetike/ktext): Source code and releases
+- [JSON Schema](https://github.com/arithmetike/ktext/blob/main/internal/schema/context-yaml.schema.json): Canonical schema definition
