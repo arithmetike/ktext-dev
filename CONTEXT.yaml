@@ -1,0 +1,109 @@
+ktext: "1.0.0"
+
+identity:
+  name: ktext-dev
+  url: https://github.com/arithmetike/ktext-dev
+  type: documentation
+  status: active
+  purpose: Public marketing and documentation website for ktext.dev — covers the schema standard, CLI commands, scoring model, and getting started guide.
+
+constraints:
+  - content: Never write Tailwind utility classes using var() syntax — always use canonical theme names (e.g. bg-accent not bg-[var(--color-accent)])
+    why: Tailwind CSS 4 defines theme tokens in the @theme block; canonical names are the source of truth and avoid IDE warnings
+  - content: Never deploy using wrangler.jsonc directly — always run wrangler deploy --config dist/server/wrangler.json
+    why: The build generates the authoritative wrangler config at dist/server/wrangler.json pointing to the correct entry.mjs and ../client assets path
+  - content: Always run npm run build before testing or deploying any CSS or component change
+    why: Some Tailwind 4 class names only resolve correctly in the production build; the dev server can lag
+
+decisions:
+  - title: Astro 5 with @astrojs/cloudflare adapter targeting Workers (not Pages)
+    rationale: Cloudflare Pages adapter is being deprecated in Astro. Workers adapter generates wrangler.json at dist/server/ and serves static assets from dist/client/. All routes are prerendered so Workers adds no runtime overhead.
+    status: accepted
+    date: "2025-04"
+  - title: Tailwind CSS 4 with @theme block for all design tokens
+    rationale: Tailwind 4 derives canonical utility class names from CSS custom properties in @theme. This eliminates arbitrary value syntax (bg-[var(...)]), lets the IDE validate class names, and makes global color changes a single edit in global.css.
+    status: accepted
+    date: "2025-04"
+  - title: Global utility classes in global.css for repeated layout patterns
+    rationale: Astro component files were cluttered with long Tailwind class chains. Common patterns (text-body, code-inline, card, link-accent, section, section-inner, block-header) are extracted to @layer components rules so templates stay readable.
+    status: accepted
+    date: "2025-04"
+  - title: Copy buttons only on install and CI code blocks, not all code blocks
+    rationale: Most code blocks are illustrative YAML/bash snippets readers won't copy verbatim. Copy buttons on every block add visual noise without benefit.
+    status: accepted
+    date: "2025-04"
+
+conventions:
+  - rule: Use @theme block in global.css as the single source of truth for all colors and fonts — never hardcode hex values in component files
+    why: Keeps design tokens consistent and makes site-wide color changes a one-line edit
+  - rule: Write reusable patterns as named utility classes in global.css under @layer components before adding inline class lists longer than 5 tokens
+    why: Prevents template clutter and keeps layout intent legible at a glance
+  - rule: Use DocsLayout for all docs pages — it provides the sidebar, prose-docs scoped styles, and nav highlighting automatically
+    why: Duplicating nav or prose styles across docs pages would diverge quickly
+  - rule: Run npm run build after any CSS or component change before reviewing output
+    why: The dev server can lag on Tailwind 4 class generation; production build is authoritative
+
+risks:
+  - content: wrangler.jsonc assets.directory was previously misconfigured (./dist instead of ./dist/client), which caused 404s on static assets after deployment
+    severity: medium
+    mitigation: Deployment now always uses the build-generated dist/server/wrangler.json which has the correct paths baked in; wrangler.jsonc is local reference only
+  - content: Tailwind CSS 4 is relatively new and breaking changes in minor versions could affect @theme resolution or utility class names
+    severity: low
+    mitigation: Pin the tailwindcss version in package.json and review the changelog before upgrading
+
+dependencies:
+  - name: Astro 5
+    url: https://astro.build
+    why: Static site framework — all pages prerender to HTML; provides layouts, components, and the Cloudflare Workers adapter integration
+  - name: Tailwind CSS 4
+    url: https://tailwindcss.com
+    why: Utility-first styling; @theme block defines design tokens as canonical CSS custom properties that map to utility class names
+  - name: "@astrojs/cloudflare"
+    url: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
+    why: Astro adapter for Cloudflare Workers — generates dist/server/wrangler.json and handles static asset routing to dist/client/
+  - name: Wrangler
+    url: https://developers.cloudflare.com/workers/wrangler/
+    why: CLI tool used in CI to deploy the built site to Cloudflare Workers
+
+working:
+  commands:
+    - command: npm run dev
+      description: start local dev server with hot reload
+    - command: npm run build
+      description: build for production — outputs dist/server/ (Worker entry) and dist/client/ (static assets)
+    - command: npm run preview
+      description: preview the production build locally before deploying
+    - command: wrangler deploy --config dist/server/wrangler.json
+      description: deploy to Cloudflare Workers; must run npm run build first
+  structure:
+    - path: src/styles/global.css
+      description: Tailwind CSS 4 @theme block (all design tokens) and @layer components utility classes
+    - path: src/layouts/
+      description: Base.astro (HTML shell + font loading) and DocsLayout.astro (sidebar nav + prose-docs scoped styles)
+    - path: src/components/
+      description: Nav, Footer, CodeBlock (with optional copy button), ScoreCard (validate score visualization)
+    - path: src/pages/index.astro
+      description: Main landing page — Hero, Problem, How It Works, The Standard (XML demo), Quality Scoring, CI callout, CTA
+    - path: src/pages/docs/
+      description: Documentation pages — index (getting started), schema (field reference), scoring (section weights and quality checks)
+    - path: public/
+      description: Static assets served directly (favicon.svg)
+    - path: .github/workflows/deploy.yml
+      description: CI workflow that builds and deploys to Cloudflare Workers on push to main
+  notes:
+    - Always run npm run build before deploying — never deploy from source directly
+    - The CLOUDFLARE_API_TOKEN secret must be set in GitHub Actions for deploy.yml to work
+    - wrangler.jsonc is local reference only; dist/server/wrangler.json (generated by build) is what gets deployed
+
+ownership:
+  team: arithmetike
+  escalation: https://github.com/arithmetike/ktext-dev/issues
+  maintainers:
+    - name: thegagne
+      role: lead
+
+links:
+  repository: https://github.com/arithmetike/ktext-dev
+  issues: https://github.com/arithmetike/ktext-dev/issues
+  ci: https://github.com/arithmetike/ktext-dev/actions
+  live: https://ktext.dev
