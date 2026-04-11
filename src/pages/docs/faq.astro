@@ -70,6 +70,18 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     No. <code>ktext</code> is a local CLI binary. No account, no telemetry, no network calls. <code>ktext init</code> reads your repo, <code>ktext validate</code> scores the file, <code>ktext export</code> renders it. Everything runs locally.
   </p>
 
+  <h2>Should I use an LLM to flesh out my CONTEXT.yaml?</h2>
+
+  <p>
+    For phrasing and structure, sure. For the actual content, be careful.
+  </p>
+  <p>
+    The sections that matter most — constraints, decisions, risks — are valuable precisely because they capture knowledge that isn't in the codebase. An LLM scanning your files will reconstruct what's already visible: directory structure, dependencies, build commands. It will miss the constraint that exists because of a production incident two years ago, the architectural decision that was made to satisfy a specific compliance requirement, the risk that everyone on the team knows about but hasn't written down.
+  </p>
+  <p>
+    <code>ktext init</code> already handles the mechanical scanning. Use an LLM to help clean up language or suggest structure, but treat it as an editor, not an author. The implicit knowledge — the stuff only your team knows — is what makes a CONTEXT.yaml worth having. If an LLM could generate it entirely from your repo, an agent could too, and you wouldn't need the file in the first place.
+  </p>
+
   <h2>Who maintains the schema?</h2>
 
   <p>
