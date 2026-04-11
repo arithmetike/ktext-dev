@@ -153,6 +153,72 @@ ktext export -list             # list all supported formats`}
     </tbody>
   </table>
 
+  <h2>Load context at the start of an agent session</h2>
+
+  <p class="text-body">
+    Once you have a <code class="code-inline">CONTEXT.yaml</code>, the next step is making sure your agent actually loads it. The goal is to get <code class="code-inline">ktext export xml</code> output into the agent's context before it starts any work.
+  </p>
+
+  <h3>Claude Code</h3>
+
+  <p class="text-body">
+    Add a <code class="code-inline">SessionStart</code> hook to <code class="code-inline">.claude/settings.json</code> at the root of your project. Claude Code runs it automatically at the start of every new session and injects the output into context — no prompting required.
+  </p>
+
+  <CodeBlock
+    code={`{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ktext export xml"
+          }
+        ]
+      }
+    ]
+  }
+}`}
+    lang="json"
+    label=".claude/settings.json"
+  />
+
+  <p class="text-body">
+    The <code class="code-inline">compact</code> matcher re-injects context after a context window compaction, so the agent never loses it mid-session.
+  </p>
+
+  <h3>Other tools (Cursor, Copilot, Windsurf, etc.)</h3>
+
+  <p class="text-body">
+    Most other tools don't support dynamic context injection at session start yet. The fallback is to run the export manually and paste the output into your tool's instruction file.
+  </p>
+
+  <CodeBlock
+    code="ktext export xml"
+    lang="bash"
+    label="terminal"
+  />
+
+  <p class="text-body">Paste the output into the relevant file for your tool:</p>
+
+  <table>
+    <thead>
+      <tr><th>Tool</th><th>File</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cursor</td><td>.cursor/rules</td></tr>
+      <tr><td>GitHub Copilot</td><td>.github/copilot-instructions.md</td></tr>
+      <tr><td>Windsurf</td><td>.windsurfrules</td></tr>
+      <tr><td>Cline</td><td>.clinerules</td></tr>
+    </tbody>
+  </table>
+
+  <p class="text-body">
+    Re-run the export and update the file whenever the <code class="code-inline">CONTEXT.yaml</code> changes significantly.
+  </p>
+
   <h2>Use in CI</h2>
 
   <p class="text-body">
