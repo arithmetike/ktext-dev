@@ -223,19 +223,22 @@ const steps = [
           <div class="block-header">
             <span>$ ktext export xml</span>
           </div>
-          <pre class="p-4 text-xs leading-relaxed bg-surface overflow-x-auto"><code class="font-mono text-muted">&lt;<span class="text-accent">context</span>&gt;
-  &lt;<span class="text-accent">identity</span> name=<span class="text-green">"my-service"</span> type=<span class="text-green">"service"</span> status=<span class="text-green">"active"</span>&gt;
-    Handles payment processing for the checkout flow.
-  &lt;/<span class="text-accent">identity</span>&gt;
+          <pre class="p-4 text-xs leading-relaxed bg-surface overflow-x-auto"><code class="font-mono text-muted">&lt;<span class="text-accent">context</span> name=<span class="text-green">"my-service"</span> type=<span class="text-green">"service"</span> status=<span class="text-green">"active"</span>&gt;
+  &lt;<span class="text-accent">purpose</span>&gt;Handles payment processing for the checkout flow.&lt;/<span class="text-accent">purpose</span>&gt;
   &lt;<span class="text-accent">constraints</span>&gt;
-    &lt;<span class="text-accent">rule</span> why=<span class="text-green">"PCI compliance"</span>&gt;Never log raw card data or PII in any request handler&lt;/<span class="text-accent">rule</span>&gt;
+    &lt;<span class="text-accent">c</span>&gt;Never log raw card data or PII in any request handler&lt;/<span class="text-accent">c</span>&gt;
+    &lt;<span class="text-accent">c</span>&gt;Always validate input at the service boundary before domain logic&lt;/<span class="text-accent">c</span>&gt;
   &lt;/<span class="text-accent">constraints</span>&gt;
   &lt;<span class="text-accent">decisions</span>&gt;
-    &lt;<span class="text-accent">decision</span> status=<span class="text-green">"accepted"</span>&gt;Use PostgreSQL for all persistent state&lt;/<span class="text-accent">decision</span>&gt;
+    &lt;<span class="text-accent">d</span> title=<span class="text-green">"Use PostgreSQL for all persistent state"</span>&gt;Need transactional integrity and JSONB support&lt;/<span class="text-accent">d</span>&gt;
   &lt;/<span class="text-accent">decisions</span>&gt;
   &lt;<span class="text-accent">risks</span>&gt;
-    &lt;<span class="text-accent">risk</span> severity=<span class="text-green">"high"</span>&gt;Migration rollback untested beyond 2 versions&lt;/<span class="text-accent">risk</span>&gt;
+    &lt;<span class="text-accent">r</span> severity=<span class="text-green">"high"</span>&gt;Migration rollback untested beyond 2 schema versions&lt;/<span class="text-accent">r</span>&gt;
   &lt;/<span class="text-accent">risks</span>&gt;
+  &lt;<span class="text-accent">commands</span>&gt;
+    &lt;<span class="text-accent">cmd</span> desc=<span class="text-green">"build the service binary"</span>&gt;make build&lt;/<span class="text-accent">cmd</span>&gt;
+    &lt;<span class="text-accent">cmd</span> desc=<span class="text-green">"run unit and integration tests"</span>&gt;make test&lt;/<span class="text-accent">cmd</span>&gt;
+  &lt;/<span class="text-accent">commands</span>&gt;
 &lt;/<span class="text-accent">context</span>&gt;</code></pre>
         </div>
 
