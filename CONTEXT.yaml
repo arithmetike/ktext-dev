@@ -64,6 +64,9 @@ dependencies:
   - name: Wrangler
     url: https://developers.cloudflare.com/workers/wrangler/
     why: CLI tool used in CI to deploy the built site to Cloudflare Workers
+  - name: ktext
+    url: https://github.com/arithmetike/ktext
+    why: The CLI tool this site documents — all content, examples, schema reference, and scoring docs must stay in sync with the ktext binary
 
 working:
   commands:
