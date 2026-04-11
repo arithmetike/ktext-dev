@@ -5,15 +5,15 @@ import ScoreCard from '../../components/ScoreCard.astro';
 
 <DocsLayout title="Scoring" description="How ktext validate scores your CONTEXT.yaml across eight sections.">
 
-  <p>
-    <code>ktext validate</code> scores your <code>CONTEXT.yaml</code> out of 100 across eight sections.
+  <p class="text-body">
+    <code class="code-inline">ktext validate</code> scores your <code class="code-inline">CONTEXT.yaml</code> out of 100 across eight sections.
     Each section is evaluated independently for presence, completeness, and quality of language.
     The output shows a score per section, a pass/fail status, and a prioritized list of fixes.
   </p>
 
   <h2>Section weights</h2>
 
-  <p>Sections are weighted by how much impact they have on context quality:</p>
+  <p class="text-body">Sections are weighted by how much impact they have on context quality:</p>
 
   <div class="my-8">
     <ScoreCard />
@@ -37,17 +37,17 @@ import ScoreCard from '../../components/ScoreCard.astro';
 
   <h2>How sections are scored</h2>
 
-  <p>Each section awards points in layers:</p>
+  <p class="text-body">Each section awards points in layers:</p>
 
   <ul>
     <li><strong>Presence</strong> — base points for including the section at all</li>
-    <li><strong>Completeness</strong> — additional points for filling optional fields like <code>why</code>, <code>status</code>, <code>date</code>, and <code>mitigation</code></li>
+    <li><strong>Completeness</strong> — additional points for optional fields like <code class="code-inline">why</code>, <code class="code-inline">status</code>, <code class="code-inline">date</code>, and <code class="code-inline">mitigation</code></li>
     <li><strong>Quality</strong> — points for the quality of language, checked per entry</li>
   </ul>
 
   <h2>Quality checks</h2>
 
-  <p>Quality is evaluated by section:</p>
+  <p class="text-body">Quality is evaluated by section:</p>
 
   <table>
     <thead>
@@ -62,13 +62,13 @@ import ScoreCard from '../../components/ScoreCard.astro';
     </tbody>
   </table>
 
-  <p>
+  <p class="text-body">
     The intent is to distinguish <em>"be careful with auth"</em> from <em>"never store raw credentials in application logs, use structured redaction middleware"</em>. The first is noise. The second is useful.
   </p>
 
   <h2>Section status</h2>
 
-  <p>Each section reports a status based on its score relative to its maximum:</p>
+  <p class="text-body">Each section reports a status based on its score relative to its maximum:</p>
 
   <table>
     <thead>
@@ -83,19 +83,19 @@ import ScoreCard from '../../components/ScoreCard.astro';
 
   <h2>Threshold</h2>
 
-  <p>
-    The default passing threshold is <strong>80/100</strong>. Override it with <code>-threshold</code>:
+  <p class="text-body">
+    The default passing threshold is <strong>80/100</strong>. Override it with <code class="code-inline">-threshold</code>:
   </p>
 
   <ul>
-    <li><code>ktext validate</code> passes if score ≥ 80</li>
-    <li><code>ktext validate -threshold 90</code> stricter bar for mature projects</li>
-    <li><code>ktext validate -threshold 0</code> always passes; useful to see the score without gating</li>
+    <li><code class="code-inline">ktext validate</code> passes if score ≥ 80</li>
+    <li><code class="code-inline">ktext validate -threshold 90</code> stricter bar for mature projects</li>
+    <li><code class="code-inline">ktext validate -threshold 0</code> always passes; useful to see the score without gating</li>
   </ul>
 
   <h2>JSON output</h2>
 
-  <p>Use <code>-json</code> for machine-readable output. Useful in CI for posting scores as PR comments or feeding into dashboards.</p>
+  <p class="text-body">Use <code class="code-inline">-json</code> for machine-readable output. Useful in CI for posting scores as PR comments or feeding into dashboards.</p>
 
   <pre class="overflow-x-auto p-4 text-sm leading-relaxed bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg my-6 font-mono text-[var(--color-muted)]">{`{
   "score": 86,

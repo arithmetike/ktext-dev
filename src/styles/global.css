@@ -34,3 +34,71 @@ html {
 ::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+/* ── Reusable component classes ─────────────────────────────────────────── */
+
+/* Section eyebrow label: "The problem", "How it works", etc. */
+.label-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+/* Inline code pill */
+.code-inline {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-cyan);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+/* Bordered card surface */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+/* Code block / card header bar */
+.block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.375rem 1rem;
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+/* Muted body text */
+.text-body {
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+
+/* Accent text link */
+.link-accent {
+  color: var(--color-accent);
+  transition: color 0.15s;
+}
+.link-accent:hover {
+  color: var(--color-accent-light);
+}
+
+/* Page section wrapper */
+.section {
+  border-top: 1px solid var(--color-border);
+}
+.section-inner {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 5rem 2rem;
+}

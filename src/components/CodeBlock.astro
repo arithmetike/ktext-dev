@@ -11,12 +11,12 @@ const id = `cb-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 <div class="rounded-lg overflow-hidden border border-[var(--color-border)] my-6">
-  <div class="flex items-center justify-between px-4 py-2 bg-[var(--color-surface-2)] border-b border-[var(--color-border)]">
-    <span class="text-xs font-mono text-[var(--color-muted)]">{label ?? lang}</span>
+  <div class="block-header">
+    <span>{label ?? lang}</span>
     {copyable && (
       <button
         data-copy-target={id}
-        class="text-xs font-mono text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
+        class="text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
         aria-label="Copy code"
       >
         copy

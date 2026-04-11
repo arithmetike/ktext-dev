@@ -5,8 +5,8 @@ import CodeBlock from '../../components/CodeBlock.astro';
 
 <DocsLayout title="Getting Started">
 
-  <p>
-    ktext is a single binary. Install it with <code>go install</code> or download a release, then run it in any Git repository.
+  <p class="text-body">
+    ktext is a single binary. Install it with <code class="code-inline">go install</code> or download a release, then run it in any Git repository.
   </p>
 
   <h2>Install</h2>
@@ -17,15 +17,15 @@ import CodeBlock from '../../components/CodeBlock.astro';
     label="terminal"
   />
 
-  <p>
-    Or download a pre-built binary for your platform from the <a href="https://github.com/arithmetike/ktext/releases" target="_blank" rel="noopener noreferrer">releases page</a>.
+  <p class="text-body">
+    Or download a pre-built binary for your platform from the <a class="link-accent" href="https://github.com/arithmetike/ktext/releases" target="_blank" rel="noopener noreferrer">releases page</a>.
     Binaries are available for Linux, macOS, and Windows on amd64 and arm64.
   </p>
 
   <h2>ktext init</h2>
 
-  <p>
-    Run <code>ktext init</code> at the root of any repository. The scanner reads your README, Makefile, package manifests (<code>package.json</code>, <code>go.mod</code>, <code>Cargo.toml</code>), ADRs, CONTRIBUTING.md, directory structure, and docker-compose files to make initial guesses.
+  <p class="text-body">
+    Run <code class="code-inline">ktext init</code> at the root of any repository. The scanner reads your README, Makefile, package manifests (<code class="code-inline">package.json</code>, <code class="code-inline">go.mod</code>, <code class="code-inline">Cargo.toml</code>), ADRs, CONTRIBUTING.md, directory structure, and docker-compose files to make initial guesses.
   </p>
 
   <CodeBlock
@@ -48,18 +48,18 @@ Run 'ktext validate' for detailed feedback.`}
     label="terminal"
   />
 
-  <p>
+  <p class="text-body">
     Every field is reviewed interactively. Press <strong>Enter</strong> to accept a discovered value, or type a replacement. The file is only written after the review is complete.
   </p>
 
-  <p>
-    If a <code>CONTEXT.yaml</code> already exists, <code>ktext init</code> will not overwrite it. Edit the file directly or delete it and re-run.
+  <p class="text-body">
+    If a <code class="code-inline">CONTEXT.yaml</code> already exists, <code class="code-inline">ktext init</code> will not overwrite it. Edit the file directly or delete it and re-run.
   </p>
 
   <h2>ktext validate</h2>
 
-  <p>
-    Scores the <code>CONTEXT.yaml</code> in the current directory across eight sections. Exits <code>0</code> if the score meets the threshold, <code>1</code> if it does not.
+  <p class="text-body">
+    Scores the <code class="code-inline">CONTEXT.yaml</code> in the current directory across eight sections. Exits <code class="code-inline">0</code> if the score meets the threshold, <code class="code-inline">1</code> if it does not.
   </p>
 
   <CodeBlock
@@ -113,8 +113,8 @@ PASS  86/80`}
 
   <h2>ktext export</h2>
 
-  <p>
-    Renders <code>CONTEXT.yaml</code> to a different format. Output goes to stdout by default so you can inspect it before writing.
+  <p class="text-body">
+    Renders <code class="code-inline">CONTEXT.yaml</code> to a different format. Output goes to stdout by default so you can inspect it before writing.
   </p>
 
   <CodeBlock
@@ -155,7 +155,7 @@ ktext export -list             # list all supported formats`}
 
   <h2>Use in CI</h2>
 
-  <p>
+  <p class="text-body">
     Add a validate step to any CI pipeline to enforce a minimum quality score on every pull request.
   </p>
 
@@ -169,8 +169,8 @@ ktext export -list             # list all supported formats`}
     label=".github/workflows/context.yml"
   />
 
-  <p>
-    A score below the threshold exits <code>1</code> and fails the step. The output includes specific fixes so developers know exactly what to improve.
+  <p class="text-body">
+    A score below the threshold exits <code class="code-inline">1</code> and fails the step. The output includes specific fixes so developers know exactly what to improve.
   </p>
 
 </DocsLayout>
