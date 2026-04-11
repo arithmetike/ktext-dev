@@ -73,13 +73,16 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <h2>Should I use an LLM to flesh out my CONTEXT.yaml?</h2>
 
   <p>
-    For phrasing and structure, sure. For the actual content, be careful.
+    Yes, with one condition: keep a human in the loop and be ruthless about signal.
   </p>
   <p>
-    The sections that matter most — constraints, decisions, risks — are valuable precisely because they capture knowledge that isn't in the codebase. An LLM scanning your files will reconstruct what's already visible: directory structure, dependencies, build commands. It will miss the constraint that exists because of a production incident two years ago, the architectural decision that was made to satisfy a specific compliance requirement, the risk that everyone on the team knows about but hasn't written down.
+    LLMs are good at surfacing context from existing material. Point one at your ADRs, your CONTRIBUTING.md, your incident postmortems, your Slack threads, and ask it to draft constraints and decisions. It will find things you forgot to write down. That's genuinely useful.
   </p>
   <p>
-    <code>ktext init</code> already handles the mechanical scanning. Use an LLM to help clean up language or suggest structure, but treat it as an editor, not an author. The implicit knowledge — the stuff only your team knows — is what makes a CONTEXT.yaml worth having. If an LLM could generate it entirely from your repo, an agent could too, and you wouldn't need the file in the first place.
+    The risk is noise. An LLM filling in gaps will produce plausible-sounding entries that are vague, generic, or just wrong. A constraint that says "always follow best practices" is worse than no constraint at all. Review everything it generates and ask: is this specific? Is this something only someone who worked on this project would know? If the answer is no, cut it or rewrite it.
+  </p>
+  <p>
+    <code>ktext validate</code> will catch the most obvious noise. Vague constraints and thin rationale score low. Use the score as a signal that something needs more thought, not as a target to game.
   </p>
 
   <h2>Who maintains the schema?</h2>
