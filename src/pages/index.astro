@@ -128,10 +128,10 @@ const steps = [
         </p>
 
         <!-- Install command — $ and code on same baseline, single copy button -->
-        <div class="flex items-center bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg overflow-hidden max-w-lg">
-          <div class="flex items-center gap-3 flex-1 px-4 py-3">
-            <span class="font-mono text-sm text-[var(--color-muted)] select-none leading-none">$</span>
-            <code id="install-cmd" class="font-mono text-sm text-[var(--color-text)] select-all leading-none">{installCmd}</code>
+        <div class="flex items-stretch bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg overflow-hidden max-w-2xl">
+          <div class="flex items-center gap-3 flex-1 min-w-0 px-4 py-3 overflow-x-auto">
+            <span class="font-mono text-sm text-[var(--color-muted)] select-none shrink-0">$</span>
+            <code id="install-cmd" class="font-mono text-sm text-[var(--color-text)] select-all whitespace-nowrap">{installCmd}</code>
           </div>
           <button
             id="copy-install"
@@ -304,8 +304,8 @@ const steps = [
   <!-- Final CTA -->
   <section class="border-t border-[var(--color-border)]">
     <div class="max-w-7xl mx-auto px-8 py-24 text-center">
-      <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-4">Start in five minutes.</h2>
-      <p class="text-[var(--color-muted)] mb-8 max-w-md mx-auto">Install the binary, run <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext init</code>, and you'll have a scored CONTEXT.yaml before your next coffee.</p>
+      <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-4">Start in seconds.</h2>
+      <p class="text-[var(--color-muted)] mb-8 max-w-md mx-auto">Install, run <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext init</code>, and you'll have a scored CONTEXT.yaml before your next coffee.</p>
       <div class="flex items-center justify-center gap-4">
         <a href="/docs" class="inline-flex items-center gap-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-[var(--color-bg)] font-medium text-sm px-6 py-3 rounded-lg transition-colors">
           Read the docs
