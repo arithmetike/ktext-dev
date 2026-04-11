@@ -1,0 +1,142 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/docs', label: 'Getting Started' },
+  { href: '/docs/schema', label: 'Schema' },
+  { href: '/docs/scoring', label: 'Scoring' },
+];
+---
+
+<Base title={title} description={description}>
+  <Nav />
+  <div class="max-w-6xl mx-auto px-6 py-16 flex gap-12">
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-52 shrink-0">
+      <div class="sticky top-24">
+        <p class="text-xs font-mono text-[var(--color-muted)] uppercase tracking-widest mb-4">Docs</p>
+        <nav class="flex flex-col gap-1">
+          {navItems.map(item => (
+            <a
+              href={item.href}
+              class={[
+                'text-sm px-3 py-1.5 rounded transition-colors',
+                currentPath === item.href || currentPath === item.href + '/'
+                  ? 'text-[var(--color-accent)] bg-[var(--color-surface)]'
+                  : 'text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]',
+              ].join(' ')}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="min-w-0 flex-1 max-w-3xl">
+      <h1 class="text-3xl font-semibold text-[var(--color-text)] mb-2">{title}</h1>
+      <div class="h-px bg-[var(--color-border)] mb-10"></div>
+      <div class="prose-docs">
+        <slot />
+      </div>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .prose-docs :global(h2) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-docs :global(h3) {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-docs :global(p) {
+    color: var(--color-muted);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-docs :global(a) {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .prose-docs :global(a:hover) {
+    color: var(--color-accent-light);
+    text-decoration: underline;
+  }
+  .prose-docs :global(ul) {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  .prose-docs :global(ul li) {
+    color: var(--color-muted);
+    padding-left: 1.25rem;
+    position: relative;
+    margin-bottom: 0.375rem;
+    line-height: 1.75;
+  }
+  .prose-docs :global(ul li::before) {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-border);
+  }
+  .prose-docs :global(code:not(pre code)) {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-cyan);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+  }
+  .prose-docs :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+  }
+  .prose-docs :global(th) {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    color: var(--color-muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-mono);
+  }
+  .prose-docs :global(td) {
+    padding: 0.625rem 1rem;
+    color: var(--color-muted);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+    vertical-align: top;
+  }
+  .prose-docs :global(td:first-child) {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-cyan);
+  }
+  .prose-docs :global(strong) {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+</style>

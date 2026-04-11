@@ -1,0 +1,111 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import ScoreCard from '../../components/ScoreCard.astro';
+---
+
+<DocsLayout title="Scoring" description="How ktext validate scores your CONTEXT.yaml across eight sections.">
+
+  <p>
+    <code>ktext validate</code> scores your <code>CONTEXT.yaml</code> out of 100 across eight sections.
+    Each section is evaluated independently for presence, completeness, and quality of language.
+    The output shows a score per section, a pass/fail status, and a prioritized list of fixes.
+  </p>
+
+  <h2>Section weights</h2>
+
+  <p>Sections are weighted by how much impact they have on context quality:</p>
+
+  <div class="my-8">
+    <ScoreCard />
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Section</th><th>Max</th><th>What it covers</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>constraints</td><td>20</td><td>Hard rules — the highest-value context for anyone working in the codebase</td></tr>
+      <tr><td>identity</td><td>15</td><td>What the project is, its purpose, type, and status</td></tr>
+      <tr><td>decisions</td><td>15</td><td>Architectural choices and their rationale</td></tr>
+      <tr><td>conventions</td><td>15</td><td>Coding and process rules</td></tr>
+      <tr><td>risks</td><td>10</td><td>Known fragile areas and mitigations</td></tr>
+      <tr><td>dependencies</td><td>10</td><td>External systems and why they're used</td></tr>
+      <tr><td>working</td><td>10</td><td>Build commands, directory layout, and dev notes</td></tr>
+      <tr><td>ownership</td><td>5</td><td>Team and escalation path</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How sections are scored</h2>
+
+  <p>Each section awards points in layers:</p>
+
+  <ul>
+    <li><strong>Presence</strong> — base points for including the section at all</li>
+    <li><strong>Completeness</strong> — additional points for filling optional fields like <code>why</code>, <code>status</code>, <code>date</code>, and <code>mitigation</code></li>
+    <li><strong>Quality</strong> — points for the quality of language, checked per entry</li>
+  </ul>
+
+  <h2>Quality checks</h2>
+
+  <p>Quality is evaluated by section:</p>
+
+  <table>
+    <thead>
+      <tr><th>Section</th><th>Quality check</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>constraints</td><td>Must contain actionable language: <em>must, never, always, require, prohibit, ensure, avoid</em>, etc.</td></tr>
+      <tr><td>conventions</td><td>Must contain an action verb: <em>use, run, write, call, return, test, format, name</em>, etc.</td></tr>
+      <tr><td>decisions</td><td>Rationale must be substantive — at least 3 words, scored for depth</td></tr>
+      <tr><td>risks</td><td>High-severity risks without a mitigation are penalized</td></tr>
+      <tr><td>identity.purpose</td><td>Must be at least 3 words</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    The intent is to distinguish <em>"be careful with auth"</em> (vague, low value) from <em>"never store raw credentials in application logs — use structured redaction middleware"</em> (specific, actionable, high value).
+  </p>
+
+  <h2>Section status</h2>
+
+  <p>Each section reports a status based on its score relative to its maximum:</p>
+
+  <table>
+    <thead>
+      <tr><th>Status</th><th>Threshold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>✓ pass</td><td>≥ 70% of section max</td></tr>
+      <tr><td>⚠ warn</td><td>30–69% of section max</td></tr>
+      <tr><td>✗ fail</td><td>&lt; 30% of section max</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Threshold</h2>
+
+  <p>
+    The default passing threshold is <strong>80/100</strong>. Override it with <code>-threshold</code>:
+  </p>
+
+  <ul>
+    <li><code>ktext validate</code> — passes if score ≥ 80</li>
+    <li><code>ktext validate -threshold 90</code> — stricter bar for mature projects</li>
+    <li><code>ktext validate -threshold 0</code> — always passes; useful to see the score without gating</li>
+  </ul>
+
+  <h2>JSON output</h2>
+
+  <p>Use <code>-json</code> for machine-readable output — useful in CI for posting scores as PR comments or feeding into dashboards.</p>
+
+  <pre class="overflow-x-auto p-4 text-sm leading-relaxed bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg my-6 font-mono text-[var(--color-muted)]">{`{
+  "score": 86,
+  "sections": [
+    { "name": "identity",     "score": 15, "max": 15, "status": "pass" },
+    { "name": "constraints",  "score": 18, "max": 20, "status": "pass",
+      "fixes": ["constraints[1]: add actionable language"] },
+    ...
+  ],
+  "fixes": ["constraints[1]: add actionable language"]
+}`}</pre>
+
+</DocsLayout>

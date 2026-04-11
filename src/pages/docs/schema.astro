@@ -1,0 +1,275 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+---
+
+<DocsLayout title="Schema Reference" description="Complete reference for all CONTEXT.yaml fields and their types.">
+
+  <p>
+    The canonical schema is <a href="https://github.com/arithmetike/ktext/blob/main/internal/schema/context-yaml.schema.json" target="_blank" rel="noopener noreferrer">context-yaml.schema.json</a> — a JSON Schema draft 2020-12 document embedded in the binary and validated at parse time. This page documents all fields.
+  </p>
+
+  <h2>Top-level structure</h2>
+
+  <CodeBlock
+    code={`ktext: "1.0.0"       # required — schema version
+identity: ...        # required
+constraints: []      # optional
+decisions: []        # optional
+conventions: []      # optional
+risks: []            # optional
+dependencies: []     # optional
+working: {}          # optional
+ownership: {}        # optional
+links: {}            # optional
+x: {}                # optional — extension fields`}
+    lang="yaml"
+    label="CONTEXT.yaml structure"
+  />
+
+  <h2>identity</h2>
+
+  <p>Required. Describes what the project is.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>name</td><td>string</td><td>yes</td><td>Short project name</td></tr>
+      <tr><td>url</td><td>string</td><td>yes</td><td>Canonical repository URL</td></tr>
+      <tr><td>type</td><td>string</td><td>no</td><td>service, library, tool, cli, app, infra, monorepo, other</td></tr>
+      <tr><td>status</td><td>string</td><td>no</td><td>active, deprecated, experimental, archived</td></tr>
+      <tr><td>purpose</td><td>string</td><td>no</td><td>What this does and why it exists — scored for specificity</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`identity:
+  name: my-service
+  url: https://github.com/org/my-service
+  type: service
+  status: active
+  purpose: Handles payment processing for the checkout flow.`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>constraints</h2>
+
+  <p>Hard rules that must never be violated. These are the highest-value entries — constraints that use specific, actionable language score significantly higher than vague ones.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>content</td><td>string</td><td>yes</td><td>The constraint — use must, never, always, prohibit, etc.</td></tr>
+      <tr><td>why</td><td>string</td><td>no</td><td>Reason — compliance, architecture, safety, etc.</td></tr>
+      <tr><td>scope</td><td>string</td><td>no</td><td>Where this applies (e.g. a package, layer, or environment)</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`constraints:
+  - content: Never log raw card data or PII in any request handler
+    why: PCI compliance
+  - content: Always validate input at the service boundary before passing to domain logic
+    why: Defense in depth — handlers must not trust callers`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>decisions</h2>
+
+  <p>Architectural and technology decisions with their rationale. A decision without rationale is just a fact — the <em>why</em> is what matters.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>title</td><td>string</td><td>yes</td><td>Short description of the decision</td></tr>
+      <tr><td>rationale</td><td>string</td><td>yes</td><td>Why this decision was made — scored for depth</td></tr>
+      <tr><td>status</td><td>string</td><td>no</td><td>accepted, superseded, deprecated, proposed</td></tr>
+      <tr><td>date</td><td>string</td><td>no</td><td>When the decision was made (YYYY-MM or YYYY-MM-DD)</td></tr>
+      <tr><td>reference</td><td>string</td><td>no</td><td>Link to an ADR, RFC, or discussion</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`decisions:
+  - title: Use PostgreSQL for all persistent state
+    rationale: Need transactional integrity and JSONB support for flexible metadata. Evaluated MySQL — lacks native JSONB and advisory locks.
+    status: accepted
+    date: "2024-03"`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>conventions</h2>
+
+  <p>Coding and process rules that apply throughout the codebase.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>rule</td><td>string</td><td>yes</td><td>The convention — scored for action verbs (use, write, run, call, etc.)</td></tr>
+      <tr><td>why</td><td>string</td><td>no</td><td>Why this rule exists</td></tr>
+      <tr><td>scope</td><td>string</td><td>no</td><td>Where this applies</td></tr>
+      <tr><td>reference</td><td>string</td><td>no</td><td>Link to documentation or style guide</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`conventions:
+  - rule: Run all database queries through the repository layer — no raw SQL in handlers
+    why: Keeps the domain layer testable and the persistence layer swappable
+  - rule: Use structured logging (slog) with a request-scoped logger — never use fmt.Println`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>risks</h2>
+
+  <p>Known fragile areas, tech debt, and operational concerns. High-severity risks without a mitigation are penalized.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>content</td><td>string</td><td>yes</td><td>Description of the risk</td></tr>
+      <tr><td>severity</td><td>string</td><td>yes</td><td>high, medium, or low</td></tr>
+      <tr><td>mitigation</td><td>string</td><td>no</td><td>What you're doing about it — required for high severity to avoid a score penalty</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`risks:
+  - content: Migration rollback untested beyond 2 schema versions
+    severity: high
+    mitigation: Add rollback smoke test to CI before the next release cycle`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>dependencies</h2>
+
+  <p>External systems and libraries this project relies on. Including a <code>why</code> is strongly recommended — it distinguishes a meaningful dependency from a transitive one.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>name</td><td>string</td><td>yes</td><td>Dependency name</td></tr>
+      <tr><td>url</td><td>string</td><td>yes</td><td>Documentation or homepage URL</td></tr>
+      <tr><td>why</td><td>string</td><td>no</td><td>What this project uses it for</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`dependencies:
+  - name: PostgreSQL
+    url: https://www.postgresql.org
+    why: Primary data store — transactional integrity and JSONB for metadata
+  - name: Redis
+    url: https://redis.io
+    why: Session cache and rate-limit counters`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>working</h2>
+
+  <p>Developer environment information — build commands, directory layout, and operational notes.</p>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>commands</td><td>array</td><td>Runnable commands with descriptions (build, test, lint, etc.)</td></tr>
+      <tr><td>structure</td><td>array</td><td>Key directories with descriptions</td></tr>
+      <tr><td>notes</td><td>string[]</td><td>Gotchas, setup steps, and workflow tips</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`working:
+  commands:
+    - command: make build
+      description: build the service binary
+    - command: make test
+      description: run unit and integration tests
+    - command: make migrate
+      description: apply pending database migrations
+  structure:
+    - path: internal/payments/
+      description: payment processing logic and provider integrations
+    - path: internal/repository/
+      description: all database access — no SQL outside this package
+  notes:
+    - Run migrations before starting the server locally
+    - Set STRIPE_WEBHOOK_SECRET in .env.local for webhook testing`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>ownership</h2>
+
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>team</td><td>string</td><td>Team or group name</td></tr>
+      <tr><td>escalation</td><td>string</td><td>Where to raise issues — Slack channel, PagerDuty, GitHub issues</td></tr>
+      <tr><td>maintainers</td><td>array</td><td>Named individuals with optional role</td></tr>
+    </tbody>
+  </table>
+
+  <CodeBlock
+    code={`ownership:
+  team: platform
+  escalation: https://github.com/org/my-service/issues
+  maintainers:
+    - name: alice
+      role: lead
+    - name: bob`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>links</h2>
+
+  <p>An open map of name → URL. No fixed keys — add whatever is useful.</p>
+
+  <CodeBlock
+    code={`links:
+  repository: https://github.com/org/my-service
+  issues: https://github.com/org/my-service/issues
+  runbook: https://notion.so/...
+  dashboard: https://grafana.internal/d/my-service`}
+    lang="yaml"
+    label="example"
+  />
+
+  <h2>Extension fields</h2>
+
+  <p>
+    The <code>x</code> key is reserved for extension fields. Values here are not validated by the schema and do not affect scoring. Use them to add project-specific metadata without breaking validation.
+  </p>
+
+  <CodeBlock
+    code={`x:
+  oncall-rotation: https://pagerduty.com/...
+  sla: 99.9%`}
+    lang="yaml"
+    label="example"
+  />
+
+</DocsLayout>

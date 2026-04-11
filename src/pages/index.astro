@@ -1,0 +1,282 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import ScoreCard from '../components/ScoreCard.astro';
+import Footer from '../components/Footer.astro';
+
+const installCmd = 'go install github.com/arithmetike/ktext/cmd/ktext@latest';
+
+const yamlExample = `ktext: "1.0.0"
+identity:
+  name: my-service
+  type: service
+  status: active
+  purpose: Handles payment processing for the checkout flow.
+
+constraints:
+  - content: Never log raw card data or PII in any request handler
+    why: PCI compliance
+
+decisions:
+  - title: Use PostgreSQL for all persistent state
+    rationale: Need transactional integrity and JSONB support
+    status: accepted
+
+conventions:
+  - rule: All DB queries go through the repository layer — no raw SQL in handlers
+
+risks:
+  - content: Migration rollback untested beyond 2 versions
+    severity: high
+    mitigation: Add rollback smoke test to CI before next release
+
+dependencies:
+  - name: PostgreSQL
+    url: https://www.postgresql.org
+    why: Primary data store
+
+working:
+  commands:
+    - command: make build
+      description: build the service
+    - command: make test
+      description: run all tests`;
+
+const steps = [
+  {
+    cmd: 'ktext init',
+    label: '01 / init',
+    title: 'Scan and generate',
+    desc: 'Reads your README, Makefile, package manifests, ADRs, and directory layout. Walks you through each discovered field interactively so you can confirm or correct.',
+  },
+  {
+    cmd: 'ktext validate',
+    label: '02 / validate',
+    title: 'Score quality',
+    desc: 'Scores all eight sections of your CONTEXT.yaml out of 100. Reports exactly what is missing and what to fix. Exits 1 if you fall below the threshold — use it in CI.',
+  },
+  {
+    cmd: 'ktext export xml',
+    label: '03 / export',
+    title: 'Export anywhere',
+    desc: 'Renders CONTEXT.yaml as XML or JSON for use in scripts, pipelines, or injecting into LLM context windows.',
+  },
+];
+---
+
+<Base>
+  <Nav />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <!-- Grid background -->
+    <div class="absolute inset-0 opacity-[0.03]" aria-hidden="true">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
+    </div>
+
+    <!-- Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-10 blur-3xl pointer-events-none"
+      style="background: radial-gradient(ellipse, var(--color-accent), transparent 70%);"
+      aria-hidden="true">
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6 pt-28 pb-24">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 border border-[var(--color-border)] rounded-full px-3 py-1 mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-green)]"></span>
+          <span class="font-mono text-xs text-[var(--color-muted)]">v0.1.1 — MIT — Go binary, zero setup</span>
+        </div>
+
+        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight tracking-tight text-[var(--color-text)] mb-6">
+          Project context,<br />
+          <span class="text-[var(--color-accent)]">machine-readable.</span>
+        </h1>
+
+        <p class="text-lg text-[var(--color-muted)] leading-relaxed mb-10 max-w-xl">
+          Every codebase carries invisible context — why Postgres instead of MySQL,
+          what you must never log, which directory owns what. <code class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> makes it explicit.
+          <code class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext</code> generates, validates, and scores it.
+        </p>
+
+        <!-- Install command -->
+        <div class="flex items-center gap-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3 max-w-lg group">
+          <span class="font-mono text-sm text-[var(--color-muted)] select-none">$</span>
+          <code id="install-cmd" class="font-mono text-sm text-[var(--color-text)] flex-1 select-all">{installCmd}</code>
+          <button
+            id="copy-install"
+            class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors shrink-0 cursor-pointer"
+            aria-label="Copy install command"
+          >copy</button>
+        </div>
+
+        <div class="flex items-center gap-4 mt-6">
+          <a href="/docs" class="inline-flex items-center gap-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-[var(--color-bg)] font-medium text-sm px-5 py-2.5 rounded-lg transition-colors">
+            Get started
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06z"/></svg>
+          </a>
+          <a href="https://github.com/arithmetike/ktext" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors">
+            View on GitHub →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The problem -->
+  <section class="border-t border-[var(--color-border)]">
+    <div class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">The problem</p>
+        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+          Context lives in engineers' heads.<br />Agents and new hires don't have that.
+        </h2>
+        <p class="text-[var(--color-muted)] leading-relaxed mb-4">
+          When a new engineer joins, or an AI agent opens a PR, they're working without the institutional knowledge your team takes for granted. They make reasonable guesses. Those guesses are often wrong.
+        </p>
+        <p class="text-[var(--color-muted)] leading-relaxed">
+          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> is a structured, human-authored file that captures what matters — constraints, decisions, risks, conventions — in a format that both humans and tools can read.
+        </p>
+      </div>
+      <div class="space-y-3">
+        {[
+          { label: 'constraints', text: 'Never log raw card data or PII in any request handler', tag: 'PCI compliance' },
+          { label: 'decisions', text: 'Use PostgreSQL for all persistent state', tag: 'accepted' },
+          { label: 'risks', text: 'Migration rollback untested beyond 2 versions', tag: 'high' },
+        ].map(item => (
+          <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-mono text-xs text-[var(--color-accent)]">{item.label}</span>
+              <span class="font-mono text-xs text-[var(--color-muted)] bg-[var(--color-surface-2)] border border-[var(--color-border)] px-2 py-0.5 rounded-full">{item.tag}</span>
+            </div>
+            <p class="text-sm text-[var(--color-muted)]">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-t border-[var(--color-border)]">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">How it works</p>
+      <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-12">Three commands.</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {steps.map(step => (
+          <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-6">
+            <p class="font-mono text-xs text-[var(--color-muted)] mb-3">{step.label}</p>
+            <div class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded px-3 py-2 mb-4">
+              $ {step.cmd}
+            </div>
+            <h3 class="text-[var(--color-text)] font-medium mb-2">{step.title}</h3>
+            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Score demo + YAML -->
+  <section class="border-t border-[var(--color-border)]">
+    <div class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-start">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">Quality scoring</p>
+        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+          Not just presence.<br />Quality matters.
+        </h2>
+        <p class="text-[var(--color-muted)] leading-relaxed mb-8">
+          Each section is scored for presence, completeness, and quality of language. A constraint with actionable language scores higher than a vague one. The scorer tells you exactly what to fix.
+        </p>
+        <ScoreCard />
+        <p class="text-xs text-[var(--color-muted)] mt-4 font-mono">
+          <a href="/docs/scoring" class="text-[var(--color-accent)] hover:text-[var(--color-accent-light)] transition-colors">
+            How scoring works →
+          </a>
+        </p>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">The file</p>
+        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+          Plain YAML.<br />Committed to the repo.
+        </h2>
+        <p class="text-[var(--color-muted)] leading-relaxed mb-6">
+          No database. No server. No account. <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">CONTEXT.yaml</code> lives at the root of your repo alongside your code.
+        </p>
+        <div class="rounded-lg overflow-hidden border border-[var(--color-border)]">
+          <div class="flex items-center justify-between px-4 py-2 bg-[var(--color-surface-2)] border-b border-[var(--color-border)]">
+            <span class="font-mono text-xs text-[var(--color-muted)]">CONTEXT.yaml</span>
+            <button id="copy-yaml" class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors cursor-pointer">copy</button>
+          </div>
+          <pre class="overflow-x-auto p-4 text-xs leading-relaxed bg-[var(--color-surface)] max-h-96 overflow-y-auto"><code id="yaml-content" class="font-mono text-[var(--color-muted)]">{yamlExample}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CI callout -->
+  <section class="border-t border-[var(--color-border)]">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs text-[var(--color-accent)] uppercase tracking-widest mb-4">CI integration</p>
+        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4">Enforce a quality floor in every PR.</h2>
+        <p class="text-[var(--color-muted)] leading-relaxed mb-6">
+          <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext validate</code> exits 1 when the score falls below your threshold. Drop it into any CI pipeline to prevent context rot.
+        </p>
+      </div>
+      <div class="rounded-lg overflow-hidden border border-[var(--color-border)] max-w-2xl">
+        <div class="flex items-center justify-between px-4 py-2 bg-[var(--color-surface-2)] border-b border-[var(--color-border)]">
+          <span class="font-mono text-xs text-[var(--color-muted)]">.github/workflows/context.yml</span>
+        </div>
+        <pre class="overflow-x-auto p-4 text-sm leading-relaxed bg-[var(--color-surface)]"><code class="font-mono text-[var(--color-muted)]"><span class="text-[var(--color-accent)]">-</span> <span class="text-[var(--color-text)]">name</span>: Validate CONTEXT.yaml
+  <span class="text-[var(--color-text)]">run</span>: |
+    go install github.com/arithmetike/ktext/cmd/ktext@latest
+    ktext validate -threshold 80</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="border-t border-[var(--color-border)]">
+    <div class="max-w-6xl mx-auto px-6 py-24 text-center">
+      <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-4">Start in five minutes.</h2>
+      <p class="text-[var(--color-muted)] mb-8 max-w-md mx-auto">Install the binary, run <code class="font-mono text-xs text-[var(--color-cyan)] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 rounded">ktext init</code>, and you'll have a scored CONTEXT.yaml before your next coffee.</p>
+      <div class="flex items-center justify-center gap-4">
+        <a href="/docs" class="inline-flex items-center gap-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-[var(--color-bg)] font-medium text-sm px-6 py-3 rounded-lg transition-colors">
+          Read the docs
+        </a>
+        <a href="/docs/schema" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors">
+          Schema reference →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
+
+<script>
+  // Install command copy
+  document.getElementById('copy-install')?.addEventListener('click', async () => {
+    const btn = document.getElementById('copy-install')!;
+    const text = document.getElementById('install-cmd')?.innerText ?? '';
+    await navigator.clipboard.writeText(text.trim());
+    btn.textContent = 'copied!';
+    setTimeout(() => { btn.textContent = 'copy'; }, 2000);
+  });
+
+  // YAML copy
+  document.getElementById('copy-yaml')?.addEventListener('click', async () => {
+    const btn = document.getElementById('copy-yaml')!;
+    const text = document.getElementById('yaml-content')?.innerText ?? '';
+    await navigator.clipboard.writeText(text.trim());
+    btn.textContent = 'copied!';
+    setTimeout(() => { btn.textContent = 'copy'; }, 2000);
+  });
+</script>
