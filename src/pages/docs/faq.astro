@@ -1,0 +1,79 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Common Questions" description="Answers to common questions about ktext and the CONTEXT.yaml standard.">
+
+  <h2>Why not just fill out a README?</h2>
+
+  <p>
+    READMEs are written for humans and optimized for readability — badges, screenshots, marketing copy, setup walkthroughs. That's fine for what they are, but agents can't reliably extract structured facts from prose. There's no standard location for architectural decisions, no field for constraints, no way to signal severity on a known risk.
+  </p>
+  <p>
+    <code>CONTEXT.yaml</code> is written to be consumed. It's structured, typed, and scored — so you can validate it in CI and know whether it actually contains useful information, not just words.
+  </p>
+
+  <h2>Why not just use CLAUDE.md / agents.md / Copilot instructions?</h2>
+
+  <p>
+    Those files are agent-specific prompt fragments — instructions you write for one tool, in one format, that only that tool reads. They're not portable, not validated, and not scored. When you switch tools or add a second agent, you start over.
+  </p>
+  <p>
+    <code>CONTEXT.yaml</code> is tool-agnostic. You write it once and export it to whatever format a given tool prefers: <code>ktext export xml</code> for token-efficient injection, <code>ktext export json</code> for scripting. The source of truth is the YAML — not a prompt fragment buried in a dotfile.
+  </p>
+
+  <h2>Why not just let the agent explore the codebase?</h2>
+
+  <p>
+    Agents can read files, but exploration is slow, expensive, and incomplete. An agent reading your directory tree and a few source files to infer your stack is burning tokens to reconstruct knowledge you already have. It won't find the constraint that exists in someone's head, the architectural decision that predates the current codebase, or the risk you know about but haven't documented yet.
+  </p>
+  <p>
+    <code>CONTEXT.yaml</code> is the things exploration can't find — the <em>why</em> behind the code, not just the <em>what</em>.
+  </p>
+
+  <h2>Is this just another documentation format?</h2>
+
+  <p>
+    The goal isn't documentation — it's context. The distinction matters: documentation explains how things work for human readers. Context tells an agent what it needs to know to act correctly in this codebase: what rules to follow, what decisions have already been made, what to watch out for.
+  </p>
+  <p>
+    A well-written <code>CONTEXT.yaml</code> is closer to a briefing document than a wiki page.
+  </p>
+
+  <h2>Does this replace existing documentation?</h2>
+
+  <p>
+    No. Keep your README, your ADRs, your runbooks. <code>CONTEXT.yaml</code> is a distillation — a curated summary of the highest-signal facts about your project, structured so agents can load it cheaply and act on it reliably. The detail lives in your existing docs; <code>CONTEXT.yaml</code> is the index that points there and surfaces what matters most.
+  </p>
+
+  <h2>Why YAML and not JSON or TOML?</h2>
+
+  <p>
+    YAML is the most natural format for structured data that humans edit by hand. JSON has no comments and gets noisy with quoting. TOML works well for flat config but gets awkward with nested lists of objects.
+  </p>
+  <p>
+    The schema is JSON Schema draft 2020-12, validated at parse time. The file format is YAML. The export formats — XML, JSON — are generated from the parsed model, not from the source file directly.
+  </p>
+
+  <h2>Why XML for agent injection?</h2>
+
+  <p>
+    The XML export is compact and structured — identity as attributes on the root <code>&lt;context&gt;</code> element, short tag names (<code>&lt;c&gt;</code> for constraints, <code>&lt;d&gt;</code> for decisions), no boilerplate. Most frontier models handle XML well in system prompts and the token count is significantly lower than equivalent JSON or Markdown prose.
+  </p>
+  <p>
+    If you prefer JSON, <code>ktext export json</code> produces a structured object. If you're writing documentation for a human, the YAML source is often clear enough to paste directly.
+  </p>
+
+  <h2>Does ktext require an account or API key?</h2>
+
+  <p>
+    No. <code>ktext</code> is a local CLI binary. There's no account, no telemetry, no network calls. <code>ktext init</code> reads your repo, <code>ktext validate</code> scores the file, <code>ktext export</code> renders it — all locally. Nothing leaves your machine.
+  </p>
+
+  <h2>Who maintains the schema?</h2>
+
+  <p>
+    The canonical schema is published at <a href="https://github.com/arithmetike/ktext" target="_blank" rel="noopener noreferrer">github.com/arithmetike/ktext</a>. Changes go through an RFD (Request for Discussion) process — the schema is designed to be stable and backwards-compatible. Extension fields (<code>x:</code>) let you add project-specific metadata without waiting for schema changes.
+  </p>
+
+</DocsLayout>
