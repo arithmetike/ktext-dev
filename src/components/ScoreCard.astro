@@ -20,30 +20,30 @@ function statusColor(score: number, max: number) {
 }
 ---
 
-<div class="rounded-lg border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]">
+<div class="rounded-lg border border-border overflow-hidden bg-surface">
   <!-- Header -->
-  <div class="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
+  <div class="flex items-center justify-between px-5 py-4 border-b border-border">
     <div class="flex items-center gap-3">
-      <span class="font-mono text-sm text-[var(--color-muted)]">CONTEXT.yaml</span>
+      <span class="font-mono text-sm text-muted">CONTEXT.yaml</span>
     </div>
     <div class="flex items-baseline gap-1">
-      <span class="font-mono text-2xl font-medium text-[var(--color-green)]">{total}</span>
-      <span class="font-mono text-sm text-[var(--color-muted)]">/ 100</span>
+      <span class="font-mono text-2xl font-medium text-green">{total}</span>
+      <span class="font-mono text-sm text-muted">/ 100</span>
     </div>
   </div>
 
   <!-- Sections -->
-  <div class="divide-y divide-[var(--color-border)]">
+  <div class="divide-y divide-border">
     {sections.map(s => (
       <div class="flex items-center gap-4 px-5 py-2.5">
-        <span class="font-mono text-xs w-28 text-[var(--color-muted)] shrink-0">{s.name}</span>
-        <div class="flex-1 h-1 rounded-full bg-[var(--color-border)]">
+        <span class="font-mono text-xs w-28 text-muted shrink-0">{s.name}</span>
+        <div class="flex-1 h-1 rounded-full bg-border">
           <div
             class="h-1 rounded-full transition-all"
             style={`width: ${(s.score / s.max) * 100}%; background-color: ${statusColor(s.score, s.max)};`}
           ></div>
         </div>
-        <span class="font-mono text-xs text-[var(--color-muted)] w-12 text-right shrink-0">
+        <span class="font-mono text-xs text-muted w-12 text-right shrink-0">
           <span style={`color: ${statusColor(s.score, s.max)}`}>{s.score}</span>/{s.max}
         </span>
       </div>
@@ -51,8 +51,8 @@ function statusColor(score: number, max: number) {
   </div>
 
   <!-- Footer -->
-  <div class="px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-surface-2)]">
-    <span class="font-mono text-xs text-[var(--color-green)]">✓ PASS</span>
-    <span class="font-mono text-xs text-[var(--color-muted)] ml-2">threshold 80</span>
+  <div class="px-5 py-3 border-t border-border bg-surface-2">
+    <span class="font-mono text-xs text-green">✓ PASS</span>
+    <span class="font-mono text-xs text-muted ml-2">threshold 80</span>
   </div>
 </div>

@@ -108,14 +108,14 @@ const steps = [
 
     <div class="relative max-w-7xl mx-auto px-8 pt-28 pb-24">
       <div class="max-w-2xl">
-        <div class="inline-flex items-center gap-2 border border-[var(--color-border)] rounded-full px-3 py-1 mb-8">
-          <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-green)]"></span>
-          <span class="font-mono text-xs text-[var(--color-muted)]">v0.1.1 · MIT · Go binary, zero setup</span>
+        <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-green"></span>
+          <span class="font-mono text-xs text-muted">v0.1.1 · MIT · Go binary, zero setup</span>
         </div>
 
-        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight tracking-tight text-[var(--color-text)] mb-6">
+        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight tracking-tight text-text mb-6">
           Project context,<br />
-          <span class="text-[var(--color-accent)]">machine-readable.</span>
+          <span class="text-accent">machine-readable.</span>
         </h1>
 
         <p class="text-body text-lg mb-10 max-w-xl">
@@ -125,24 +125,24 @@ const steps = [
           <code class="code-inline">ktext</code> generates, validates, and scores it.
         </p>
 
-        <div class="flex items-stretch bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg overflow-hidden max-w-2xl">
+        <div class="flex items-stretch bg-surface border border-border rounded-lg overflow-hidden max-w-2xl">
           <div class="flex items-center gap-3 flex-1 min-w-0 px-4 py-3 overflow-x-auto">
-            <span class="font-mono text-sm text-[var(--color-muted)] select-none shrink-0">$</span>
-            <code id="install-cmd" class="font-mono text-sm text-[var(--color-text)] select-all whitespace-nowrap">{installCmd}</code>
+            <span class="font-mono text-sm text-muted select-none shrink-0">$</span>
+            <code id="install-cmd" class="font-mono text-sm text-text select-all whitespace-nowrap">{installCmd}</code>
           </div>
           <button
             id="copy-install"
-            class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-surface-2)] transition-colors shrink-0 cursor-pointer px-4 py-3 border-l border-[var(--color-border)]"
+            class="font-mono text-xs color-muted hover:text-accent hover:bg-surface-2 transition-colors shrink-0 cursor-pointer px-4 py-3 border-l border-border"
             aria-label="Copy install command"
           >copy</button>
         </div>
 
         <div class="flex items-center gap-4 mt-6">
-          <a href="/docs" class="inline-flex items-center gap-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-[var(--color-bg)] font-medium text-sm px-5 py-2.5 rounded-lg transition-colors">
+          <a href="/docs" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-bg font-medium text-sm px-5 py-2.5 rounded-lg transition-colors">
             Get started
             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06z"/></svg>
           </a>
-          <a href="https://github.com/arithmetike/ktext" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors">
+          <a href="https://github.com/arithmetike/ktext" target="_blank" rel="noopener noreferrer" class="text-sm text-muted hover:text-text transition-colors">
             View on GitHub →
           </a>
         </div>
@@ -155,7 +155,7 @@ const steps = [
     <div class="section-inner grid md:grid-cols-2 gap-16 items-center">
       <div>
         <p class="label-eyebrow">The problem</p>
-        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+        <h2 class="text-2xl font-semibold text-text mb-4 leading-snug">
           Context lives in engineers' heads.<br />Agents and new hires don't have that.
         </h2>
         <p class="text-body mb-4">
@@ -173,10 +173,10 @@ const steps = [
         ].map(item => (
           <div class="card px-4 py-3">
             <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-xs text-[var(--color-accent)]">{item.label}</span>
-              <span class="font-mono text-xs text-[var(--color-muted)] bg-[var(--color-surface-2)] border border-[var(--color-border)] px-2 py-0.5 rounded-full">{item.tag}</span>
+              <span class="font-mono text-xs text-accent">{item.label}</span>
+              <span class="font-mono text-xs text-muted bg-surface-2 border border-border px-2 py-0.5 rounded-full">{item.tag}</span>
             </div>
-            <p class="text-sm text-[var(--color-muted)]">{item.text}</p>
+            <p class="text-sm text-muted">{item.text}</p>
           </div>
         ))}
       </div>
@@ -187,16 +187,16 @@ const steps = [
   <section class="section">
     <div class="section-inner">
       <p class="label-eyebrow">How it works</p>
-      <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-12">Three commands.</h2>
+      <h2 class="text-2xl font-semibold text-text mb-12">Three commands.</h2>
       <div class="grid md:grid-cols-3 gap-6">
         {steps.map(step => (
           <div class="card p-6">
-            <p class="font-mono text-xs text-[var(--color-muted)] mb-3">{step.label}</p>
-            <div class="font-mono text-sm text-[var(--color-cyan)] bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded px-3 py-2 mb-4">
+            <p class="font-mono text-xs text-muted mb-3">{step.label}</p>
+            <div class="font-mono text-sm text-cyan bg-surface-2 border border-border rounded px-3 py-2 mb-4">
               $ {step.cmd}
             </div>
-            <h3 class="text-[var(--color-text)] font-medium mb-2">{step.title}</h3>
-            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{step.desc}</p>
+            <h3 class="text-text font-medium mb-2">{step.title}</h3>
+            <p class="text-sm text-muted leading-relaxed">{step.desc}</p>
           </div>
         ))}
       </div>
@@ -208,7 +208,7 @@ const steps = [
     <div class="section-inner grid lg:grid-cols-2 gap-16 items-start">
       <div>
         <p class="label-eyebrow">The standard</p>
-        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+        <h2 class="text-2xl font-semibold text-text mb-4 leading-snug">
           One file.<br />Everything an agent needs.
         </h2>
         <p class="text-body mb-4">
@@ -225,9 +225,9 @@ const steps = [
             { stat: '0', unit: 'deps', label: 'plain YAML, no tooling required' },
           ].map(item => (
             <div class="card p-4 text-center">
-              <div class="font-mono text-xl font-semibold text-[var(--color-accent)]">{item.stat}</div>
-              <div class="font-mono text-xs text-[var(--color-muted)] mb-1">{item.unit}</div>
-              <div class="text-xs text-[var(--color-muted)] leading-tight">{item.label}</div>
+              <div class="font-mono text-xl font-semibold text-accent">{item.stat}</div>
+              <div class="font-mono text-xs text-muted mb-1">{item.unit}</div>
+              <div class="text-xs text-muted leading-tight">{item.label}</div>
             </div>
           ))}
         </div>
@@ -238,11 +238,11 @@ const steps = [
       </div>
 
       <div>
-        <div class="rounded-lg overflow-hidden border border-[var(--color-border)]">
+        <div class="rounded-lg overflow-hidden border border-border">
           <div class="block-header">
             <span>CONTEXT.yaml</span>
           </div>
-          <pre class="p-4 text-xs leading-relaxed bg-[var(--color-surface)]"><code class="font-mono text-[var(--color-muted)]">{yamlExample}</code></pre>
+          <pre class="p-4 text-xs leading-relaxed bg-surface"><code class="font-mono text-muted">{yamlExample}</code></pre>
         </div>
       </div>
     </div>
@@ -253,7 +253,7 @@ const steps = [
     <div class="section-inner grid lg:grid-cols-2 gap-16 items-start">
       <div>
         <p class="label-eyebrow">Quality scoring</p>
-        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4 leading-snug">
+        <h2 class="text-2xl font-semibold text-text mb-4 leading-snug">
           Not just presence.<br />Quality matters.
         </h2>
         <p class="text-body mb-4">
@@ -277,17 +277,17 @@ const steps = [
     <div class="section-inner">
       <div class="max-w-2xl">
         <p class="label-eyebrow">CI integration</p>
-        <h2 class="text-2xl font-semibold text-[var(--color-text)] mb-4">Keep quality from slipping.</h2>
+        <h2 class="text-2xl font-semibold text-text mb-4">Keep quality from slipping.</h2>
         <p class="text-body mb-6">
           <code class="code-inline">ktext validate</code> exits 1 below your threshold. One step in CI and context rot becomes a failing check.
         </p>
       </div>
-      <div class="rounded-lg overflow-hidden border border-[var(--color-border)] max-w-2xl">
+      <div class="rounded-lg overflow-hidden border border-border max-w-2xl">
         <div class="block-header">
           <span>.github/workflows/context.yml</span>
         </div>
-        <pre class="overflow-x-auto p-4 text-sm leading-relaxed bg-[var(--color-surface)]"><code class="font-mono text-[var(--color-muted)]"><span class="text-[var(--color-accent)]">-</span> <span class="text-[var(--color-text)]">name</span>: Validate CONTEXT.yaml
-  <span class="text-[var(--color-text)]">run</span>: |
+        <pre class="overflow-x-auto p-4 text-sm leading-relaxed bg-surface"><code class="font-mono text-muted"><span class="text-accent">-</span> <span class="text-text">name</span>: Validate CONTEXT.yaml
+  <span class="text-text">run</span>: |
     go install github.com/arithmetike/ktext/cmd/ktext@latest
     ktext validate -threshold 80</code></pre>
       </div>
@@ -297,10 +297,10 @@ const steps = [
   <!-- Final CTA -->
   <section class="section">
     <div class="section-inner text-center">
-      <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-4">Start in seconds.</h2>
+      <h2 class="text-3xl font-semibold text-text mb-4">Start in seconds.</h2>
       <p class="text-body mb-8 max-w-md mx-auto">Install, run <code class="code-inline">ktext init</code>, and you'll have a scored CONTEXT.yaml before your next coffee.</p>
       <div class="flex items-center justify-center gap-4">
-        <a href="/docs" class="inline-flex items-center gap-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-[var(--color-bg)] font-medium text-sm px-6 py-3 rounded-lg transition-colors">
+        <a href="/docs" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-bg font-medium text-sm px-6 py-3 rounded-lg transition-colors">
           Read the docs
         </a>
         <a href="/docs/schema" class="link-accent text-sm">
