@@ -40,10 +40,10 @@ html {
 /* Section eyebrow label: "The problem", "How it works", etc. */
 .label-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   margin-bottom: 1rem;
 }
 
