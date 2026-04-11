@@ -192,16 +192,8 @@ ktext export -list             # list all supported formats`}
   <h3>Other tools (Cursor, Copilot, Windsurf, etc.)</h3>
 
   <p class="text-body">
-    Most other tools don't support dynamic context injection at session start yet. The fallback is to run the export manually and paste the output into your tool's instruction file.
+    Most other tools don't support dynamic context injection at session start yet. The fallback is to add a single line to your tool's instruction file telling the agent to run the export itself.
   </p>
-
-  <CodeBlock
-    code="ktext export xml"
-    lang="bash"
-    label="terminal"
-  />
-
-  <p class="text-body">Paste the output into the relevant file for your tool:</p>
 
   <table>
     <thead>
@@ -215,9 +207,11 @@ ktext export -list             # list all supported formats`}
     </tbody>
   </table>
 
-  <p class="text-body">
-    Re-run the export and update the file whenever the <code class="code-inline">CONTEXT.yaml</code> changes significantly.
-  </p>
+  <CodeBlock
+    code="Run `ktext export xml` at the start of every session to load project context."
+    lang="text"
+    label="instruction file"
+  />
 
   <h2>Use in CI</h2>
 
