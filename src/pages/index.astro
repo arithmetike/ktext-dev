@@ -246,7 +246,7 @@ const steps = [
           {[
             { stat: '~50', unit: 'lines', label: 'replaces the toil of codebase exploration' },
             { stat: '<2k', unit: 'tokens', label: 'for the full file as XML' },
-            { stat: 'CLI', unit: 'only', label: 'no MCP server, no bloated context pipeline' },
+            { stat: 'CLI ONLY', unit: 'zero MCP', label: 'no bloated context' },
           ].map(item => (
             <div class="card p-4 text-center">
               <div class="font-mono text-xl font-semibold text-accent">{item.stat}</div>
@@ -278,14 +278,27 @@ const steps = [
       <div>
         <p class="label-eyebrow">Quality scoring</p>
         <h2 class="text-2xl font-semibold text-text mb-4 leading-snug">
-          Not just presence.<br />Quality matters.
+          Context, not empty content.<br />Quality matters.
         </h2>
-        <p class="text-body mb-4">
-          "Be careful with logging" is noise. "Never leak sensitive information in application logs, use structured redaction middleware" is signal. The scorer knows the difference and tells you what to fix.
+        <p class="text-body mb-6">
+          Each section is scored for presence, completeness, and language quality. Vague entries score low and surface as fixes.
         </p>
-        <p class="text-body mb-8">
-          Each section is scored for presence, completeness, and language quality across eight weighted categories.
-        </p>
+
+        <div class="space-y-3 mb-8">
+          <div class="rounded-lg border border-red/30 bg-red/5 px-4 py-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-red text-xs font-mono">✗ low score</span>
+            </div>
+            <p class="font-mono text-xs text-muted">Be careful with logging</p>
+          </div>
+          <div class="rounded-lg border border-green/30 bg-green/5 px-4 py-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-green text-xs font-mono">✓ high score</span>
+            </div>
+            <p class="font-mono text-xs text-muted">Never write sensitive fields to application logs. Use the redact() helper before passing data to the logger.</p>
+          </div>
+        </div>
+
         <a href="/docs/scoring" class="link-accent inline-flex items-center gap-1.5 text-sm">
           How scoring works →
         </a>
