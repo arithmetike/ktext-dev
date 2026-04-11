@@ -159,7 +159,7 @@ const steps = [
           Context lives in engineers' heads.<br />Agents and new hires don't have that.
         </h2>
         <p class="text-body mb-4">
-          When a new engineer joins, or an AI agent opens a PR, they work without the institutional knowledge your team takes for granted. They make reasonable guesses. Those guesses are often wrong.
+          When a new engineer joins, or an AI agent is spun up to work on a project, they work without the institutional knowledge your team takes for granted. They make reasonable guesses, or spend time or tokens looking for config files, documentation, ADRs, or comments that may or may not be there. This leads to mistakes, inefficiency, and risk.
         </p>
         <p class="text-body">
           <code class="code-inline">CONTEXT.yaml</code> captures what matters in a structured file both humans and tools can read: constraints, decisions, risks, and conventions.
@@ -214,15 +214,36 @@ const steps = [
         <p class="text-body mb-4">
           An agent reading your codebase cold will spend tokens on config files, grep for conventions, and still miss things. Give it <code class="code-inline">CONTEXT.yaml</code> and it starts with the full picture.
         </p>
-        <p class="text-body mb-8">
-          No database, no server, no account. It lives at the root of your repo, versioned with your code, readable by anything that can parse YAML.
+        <p class="text-body mb-6">
+          No database, no server, no account. It lives at the root of your repo, versioned with your code. Export to compact XML for efficient injection into any LLM context window.
         </p>
+
+        <!-- XML export demo -->
+        <div class="rounded-lg overflow-hidden border border-border mb-8">
+          <div class="block-header">
+            <span>$ ktext export xml</span>
+          </div>
+          <pre class="p-4 text-xs leading-relaxed bg-surface overflow-x-auto"><code class="font-mono text-muted">&lt;<span class="text-accent">context</span>&gt;
+  &lt;<span class="text-accent">identity</span> name=<span class="text-green">"my-service"</span> type=<span class="text-green">"service"</span> status=<span class="text-green">"active"</span>&gt;
+    Handles payment processing for the checkout flow.
+  &lt;/<span class="text-accent">identity</span>&gt;
+  &lt;<span class="text-accent">constraints</span>&gt;
+    &lt;<span class="text-accent">rule</span> why=<span class="text-green">"PCI compliance"</span>&gt;Never log raw card data or PII in any request handler&lt;/<span class="text-accent">rule</span>&gt;
+  &lt;/<span class="text-accent">constraints</span>&gt;
+  &lt;<span class="text-accent">decisions</span>&gt;
+    &lt;<span class="text-accent">decision</span> status=<span class="text-green">"accepted"</span>&gt;Use PostgreSQL for all persistent state&lt;/<span class="text-accent">decision</span>&gt;
+  &lt;/<span class="text-accent">decisions</span>&gt;
+  &lt;<span class="text-accent">risks</span>&gt;
+    &lt;<span class="text-accent">risk</span> severity=<span class="text-green">"high"</span>&gt;Migration rollback untested beyond 2 versions&lt;/<span class="text-accent">risk</span>&gt;
+  &lt;/<span class="text-accent">risks</span>&gt;
+&lt;/<span class="text-accent">context</span>&gt;</code></pre>
+        </div>
 
         <div class="grid grid-cols-3 gap-4 mb-8">
           {[
-            { stat: '~50', unit: 'lines', label: 'replaces hours of codebase exploration' },
+            { stat: '~50', unit: 'lines', label: 'replaces the toil of codebase exploration' },
             { stat: '<2k', unit: 'tokens', label: 'for the full file as XML' },
-            { stat: '0', unit: 'deps', label: 'plain YAML, no tooling required' },
+            { stat: 'CLI', unit: 'only', label: 'no MCP server, no bloated context pipeline' },
           ].map(item => (
             <div class="card p-4 text-center">
               <div class="font-mono text-xl font-semibold text-accent">{item.stat}</div>
@@ -257,7 +278,7 @@ const steps = [
           Not just presence.<br />Quality matters.
         </h2>
         <p class="text-body mb-4">
-          "Be careful with auth" is noise. "Never store raw credentials in application logs, use structured redaction middleware" is signal. The scorer knows the difference and tells you what to fix.
+          "Be careful with logging" is noise. "Never leak sensitive information in application logs, use structured redaction middleware" is signal. The scorer knows the difference and tells you what to fix.
         </p>
         <p class="text-body mb-8">
           Each section is scored for presence, completeness, and language quality across eight weighted categories.
