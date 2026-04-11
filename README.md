@@ -1,43 +1,53 @@
-# Astro Starter Kit: Minimal
+# ktext.dev
 
-```sh
-npm create astro@latest -- --template minimal
+The public website for [ktext](https://github.com/arithmetike/ktext) — a CLI tool that generates, validates, and exports `CONTEXT.yaml`, a machine-readable project context file for AI coding agents and developer tools.
+
+Live at **[ktext.dev](https://ktext.dev)**.
+
+## What's on the site
+
+- **Landing page** — explains the problem ktext solves, how it works, and what the schema looks like in practice
+- **Getting Started** — install instructions, `ktext init`, `ktext validate`, `ktext export`, and CI integration
+- **Schema Reference** — complete field reference for all `CONTEXT.yaml` sections
+- **Scoring** — how `ktext validate` scores files across eight sections, section weights, quality checks, and JSON output
+- **Common Questions** — answers to "why not just use a README", "why not CLAUDE.md", and other common questions
+
+## Stack
+
+- [Astro 5](https://astro.build) — static site, all pages prerendered
+- [Tailwind CSS 4](https://tailwindcss.com) — utility-first styling with `@theme` design tokens
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) — hosting via `@astrojs/cloudflare` adapter
+
+## Development
+
+```bash
+npm install
+npm run dev        # dev server at localhost:4321
+npm run build      # production build → dist/
+npm run preview    # preview the production build locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Deployment
 
-## 🚀 Project Structure
+The site deploys automatically to Cloudflare Workers on push to `main` via `.github/workflows/deploy.yml`.
 
-Inside of your Astro project, you'll see the following folders and files:
+To deploy manually after a build:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run build
+wrangler deploy --config dist/server/wrangler.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The build generates the authoritative `wrangler.json` at `dist/server/` — don't deploy from `wrangler.jsonc` directly.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## About ktext
 
-Any static assets, like images, can be placed in the `public/` directory.
+Every codebase has context that lives in engineers' heads: why Postgres instead of MySQL, what you must never log, which layer owns what. When a new engineer joins, or an AI agent opens a PR, that context is missing. They guess. They get it wrong.
 
-## 🧞 Commands
+`CONTEXT.yaml` is a single file that captures that knowledge in a structured, machine-readable format. `ktext` generates it from your existing repo, scores it, and exports it to XML or JSON for efficient injection into any LLM context window.
 
-All commands are run from the root of the project, from a terminal:
+The CLI is at [github.com/arithmetike/ktext](https://github.com/arithmetike/ktext). MIT licensed, no accounts, no strings attached.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## License
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+MIT
