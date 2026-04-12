@@ -189,10 +189,43 @@ ktext export -list             # list all supported formats`}
     The <code class="code-inline">compact</code> matcher re-injects context after a context window compaction, so the agent never loses it mid-session.
   </p>
 
-  <h3>Other tools (Cursor, Copilot, Windsurf, etc.)</h3>
+  <h3>GitHub Copilot</h3>
 
   <p class="text-body">
-    Most other tools don't support dynamic context injection at session start yet. The fallback is to add a single line to your tool's instruction file telling the agent to run the export itself.
+    Copilot supports hooks via <code class="code-inline">.github/hooks/hooks.json</code>. However, <code class="code-inline">sessionStart</code> hook output is currently ignored — hooks are limited to logging and <code class="code-inline">preToolUse</code> access control. For context loading, use the instruction file instead.
+  </p>
+
+  <CodeBlock
+    code="Run `ktext export xml` at the start of every session to load project context."
+    lang="text"
+    label=".github/copilot-instructions.md"
+  />
+
+  <p class="text-body">
+    If you want to use Copilot's hook system for other purposes (logging, tool control), the format is:
+  </p>
+
+  <CodeBlock
+    code={`{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "echo \\"Session started: $(date)\\" >> .copilot-session.log",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}`}
+    lang="json"
+    label=".github/hooks/hooks.json"
+  />
+
+  <h3>Cursor, Windsurf, Cline</h3>
+
+  <p class="text-body">
+    These tools don't support dynamic context injection at session start. Add a single line to the relevant instruction file and the agent will run it at the start of each session.
   </p>
 
   <table>
@@ -201,7 +234,6 @@ ktext export -list             # list all supported formats`}
     </thead>
     <tbody>
       <tr><td>Cursor</td><td>.cursor/rules</td></tr>
-      <tr><td>GitHub Copilot</td><td>.github/copilot-instructions.md</td></tr>
       <tr><td>Windsurf</td><td>.windsurfrules</td></tr>
       <tr><td>Cline</td><td>.clinerules</td></tr>
     </tbody>
