@@ -106,7 +106,7 @@ const steps = [
       aria-hidden="true">
     </div>
 
-    <div class="relative max-w-7xl mx-auto px-8 pt-20 pb-24">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-8 pt-14 sm:pt-20 pb-16 sm:pb-24">
       <div class="max-w-2xl">
         <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 mb-6">
           <span class="w-1.5 h-1.5 rounded-full bg-green"></span>
@@ -242,13 +242,13 @@ const steps = [
 &lt;/<span class="text-accent">context</span>&gt;</code></pre>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
           {[
             { stat: '~50', unit: 'lines', label: 'replaces the toil of codebase exploration' },
             { stat: '<2k', unit: 'tokens', label: 'for the full file as XML' },
             { stat: '~80%', unit: 'less context overhead', label: 'more tokens for actual work' },
           ].map(item => (
-            <div class="card p-4 text-center">
+            <div class="card p-4 sm:text-center flex sm:block items-center gap-4">
               <div class="font-mono text-xl font-semibold text-accent">{item.stat}</div>
               <div class="font-mono text-xs text-muted mb-1">{item.unit}</div>
               <div class="text-xs text-muted leading-tight">{item.label}</div>
@@ -266,7 +266,7 @@ const steps = [
           <div class="block-header">
             <span>CONTEXT.yaml</span>
           </div>
-          <pre class="p-4 text-xs leading-relaxed bg-surface"><code class="font-mono text-muted">{yamlExample}</code></pre>
+          <pre class="p-4 text-xs leading-relaxed bg-surface overflow-x-auto max-h-64 sm:max-h-none overflow-y-auto"><code class="font-mono text-muted">{yamlExample}</code></pre>
         </div>
       </div>
     </div>
@@ -336,7 +336,7 @@ const steps = [
     <div class="section-inner text-center">
       <h2 class="text-3xl font-semibold text-text mb-4">Start in seconds.</h2>
       <p class="text-body mb-8 max-w-md mx-auto">Install, run <code class="code-inline">ktext init</code>, and you'll have a scored CONTEXT.yaml ready to go!</p>
-      <div class="flex items-center justify-center gap-4">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <a href="/docs" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-bg font-medium text-sm px-6 py-3 rounded-lg transition-colors">
           Read the docs
         </a>

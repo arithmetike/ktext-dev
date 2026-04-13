@@ -100,5 +100,10 @@ html {
 .section-inner {
   max-width: 80rem;
   margin-inline: auto;
-  padding: 5rem 2rem;
+  padding: 3rem 1.25rem;
+}
+@media (min-width: 640px) {
+  .section-inner {
+    padding: 5rem 2rem;
+  }
 }
