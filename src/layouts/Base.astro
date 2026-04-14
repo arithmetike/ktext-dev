@@ -29,11 +29,13 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://ktext.dev');
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="ktext" />
+    <meta property="og:image" content="https://ktext.dev/og-image.png" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://ktext.dev/og-image.png" />
 
     <title>{fullTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
